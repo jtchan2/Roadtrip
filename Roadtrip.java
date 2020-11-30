@@ -26,6 +26,11 @@ public class Roadtrip extends Graph{
         timeTaken = 0;
     }
     List<String> route(String start_location, String end_location, List<String> attractions) {
+        //Array list gps will contai nthe route from starting city to end city with cities travlled from attractions list
+        //Created a hashtable contain falses fro each city so it would turn true once visitning the city
+        //made data in distances to equalthe max number possible and make starting city 0 so it would become starting point
+        //Dijkstra algorithm used to travel city to city
+        //use variables to keep track of distance and time taken to travel
 
         ArrayList<String> gps = new ArrayList<>();
         Hashtable<String, List<String>> adjacencyList= graph.get();
@@ -55,7 +60,10 @@ public class Roadtrip extends Graph{
             }
         }
 
-
+        //This block of code orders attractions needed to visit by how close they are from start distance/ location
+        //meaning the closer the attraction is to the most recent visited city it takes in 
+        //and then keeps checking for closes attraction to the nearest attraction visited
+        //Keeps places in hashtable to better get data
         ArrayList<Integer> attractionRank = new ArrayList<>();
         ArrayList<String> attractionsRanked = new ArrayList<>();
         Hashtable<Integer, String> attractionConverter = new Hashtable<>();
@@ -100,7 +108,7 @@ public class Roadtrip extends Graph{
                 gps.add((String) stitch.pop());
             }
 
-
+            //after adding route of attraction to attraction it resets hashtables and get added dsitances from starting point to keep path updated
             visited = new Hashtable<>();
             recent = new Hashtable<>();
             distance = new Hashtable<>();
@@ -208,9 +216,6 @@ public class Roadtrip extends Graph{
             while ((roadContent = read.readLine()) != null) {
                 String[] line = roadContent.split(",");
                 Integer distance = Integer.parseInt(line[2]);
-                if (line[3].equals("10a")) {
-                    line[3] = "100";
-                }
                 Integer time = Integer.parseInt(line[3]);
                 if (line[0] != null && line[1] != null) {
                     graph.addEdge(line[0], line[1], distance, time);
