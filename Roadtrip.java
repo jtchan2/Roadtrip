@@ -84,6 +84,8 @@ public class Roadtrip extends Graph{
         if (attractionsRanked.contains(end_location)) {
             attractionsRanked.remove(end_location);
             attractionsRanked.add(end_location);
+        }else{
+            attractionsRanked.add(end_location);
         }
 
         Stack <String>stitch = new Stack<String>();
