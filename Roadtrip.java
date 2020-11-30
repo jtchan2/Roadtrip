@@ -223,12 +223,12 @@ public class Roadtrip extends Graph{
         }
     }
     public static void main(String args[]) throws FileNotFoundException {
-        Roadtrip pf = new Roadtrip();
+        Roadtrip roadtrip = new Roadtrip();
 
         String roads = "roads.csv";
         String places = "attractions.csv";
-        pf.roadReader(roads);
-        pf.funZones(places);
+        roadtrip.roadReader(roads);
+        roadtrip.funZones(places);
 
         
         Scanner sc2= new Scanner(System.in);
@@ -251,8 +251,8 @@ public class Roadtrip extends Graph{
                 choice= sc2.nextLine();
             }
         }
-        List<String> path = pf.route(sCity, eCity, attractions);
-        pf.print(path);
+        List<String> path = roadtrip.route(sCity, eCity, attractions);
+        roadtrip.print(path);
 
     }
 
