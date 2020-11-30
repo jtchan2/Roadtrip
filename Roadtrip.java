@@ -25,7 +25,7 @@ public class Roadtrip extends Graph{
         milesTravelled = 0;
         timeTaken = 0;
     }
-    List<String> route(String start_location, String end_location, List<String> attractions) {
+    List<String> route(String sCity, String eCity, List<String> attractions) {
         //Array list gps will contai nthe route from starting city to end city with cities travlled from attractions list
         //Created a hashtable contain falses fro each city so it would turn true once visitning the city
         //made data in distances to equalthe max number possible and make starting city 0 so it would become starting point
@@ -35,7 +35,7 @@ public class Roadtrip extends Graph{
         ArrayList<String> gps = new ArrayList<>();
         Hashtable<String, List<String>> adjacencyList= graph.get();
 
-        graph.addEdge(start_location, start_location, 0, 0);
+        graph.addEdge(sCity, sCity, 0, 0);
 
         for (String city : cities) {
             if (city != null) {
@@ -44,7 +44,7 @@ public class Roadtrip extends Graph{
             }
         }
 
-        distance.put(start_location, 0);
+        distance.put(sCity, 0);
 
         for (String city : cities) {
             while (!visited.get(city)) {
@@ -64,37 +64,37 @@ public class Roadtrip extends Graph{
         //meaning the closer the attraction is to the most recent visited city it takes in 
         //and then keeps checking for closes attraction to the nearest attraction visited
         //Keeps places in hashtable to better get data
-        ArrayList<Integer> attractionRank = new ArrayList<>();
-        ArrayList<String> attractionsRanked = new ArrayList<>();
-        Hashtable<Integer, String> attractionConverter = new Hashtable<>();
+        ArrayList<Integer> attractionToSort = new ArrayList<>();
+        ArrayList<String> attractionsSorted = new ArrayList<>();
+        Hashtable<Integer, String> converter = new Hashtable<>();
 
         for (String attraction : attractions) {
-            attractionRank.add(distance.get(attracionsAl.get(attraction)));
-            attractionConverter.put(distance.get(attracionsAl.get(attraction)), attraction);
+            attractionToSort.add(distance.get(attracionsAl.get(attraction)));
+            converter.put(distance.get(attracionsAl.get(attraction)), attraction);
         }
-        Collections.sort(attractionRank);
+        Collections.sort(attractionToSort);
 
-        for (int rank : attractionRank) {
-            attractionsRanked.add(attracionsAl.get(attractionConverter.get(rank)));
+        for (int rank : attractionToSort) {
+            attractionsSorted.add(attracionsAl.get(converter.get(rank)));
         }
 
-        attractionsRanked.add(0, start_location);
+        attractionsSorted.add(0, sCity);
 
         //Visits the end location at the end if the attraction is present there
-        if (attractionsRanked.contains(end_location)) {
-            attractionsRanked.remove(end_location);
-            attractionsRanked.add(end_location);
+        if (attractionsSorted.contains(eCity)) {
+            attractionsSorted.remove(eCity);
+            attractionsSorted.add(eCity);
         }else{
-            attractionsRanked.add(end_location);
+            attractionsSorted.add(eCity);
         }
 
         Stack <String>stitch = new Stack<String>();
 
 
-        for (int i = 0; i < attractionsRanked.size()-1; i++) {
-            String current = attractionsRanked.get(i);
-            String nextVertex = attractionsRanked.get(i + 1);
-            String nextVertexTemp = attractionsRanked.get(i + 1);
+        for (int i = 0; i < attractionsSorted.size()-1; i++) {
+            String current = attractionsSorted.get(i);
+            String nextVertex = attractionsSorted.get(i + 1);
+            String nextVertexTemp = attractionsSorted.get(i + 1);
 
             stitch.add(nextVertex);
             while (!current.equals(nextVertex)) {
@@ -218,6 +218,9 @@ public class Roadtrip extends Graph{
             while ((roadContent = read.readLine()) != null) {
                 String[] line = roadContent.split(",");
                 Integer distance = Integer.parseInt(line[2]);
+                if(line[3].equals("10a")){
+                    line[3]="100";
+                }
                 Integer time = Integer.parseInt(line[3]);
                 if (line[0] != null && line[1] != null) {
                     graph.addEdge(line[0], line[1], distance, time);
@@ -239,6 +242,7 @@ public class Roadtrip extends Graph{
 
         
         Scanner sc2= new Scanner(System.in);
+        //Inputs from user as case sensitve so input correct name of place and attractions
         System.out.println("Choose a starting point");
         String sCity= sc2.nextLine();
         System.out.println("Choose an end point");
